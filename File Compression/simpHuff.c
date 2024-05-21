@@ -1,6 +1,13 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 
+    void checkFrequency(char c[]){
+
+        
+
+    }
+
+
 int main(){
     int input; 
     int x; 
@@ -21,9 +28,7 @@ int main(){
         character[i] = c; 
     }
 
-    for(int i = 0; i < input; i++){
-        printf("\n%c", character[i]); 
-    }
+    checkFrequency(&character); 
 
     return 0; 
 
