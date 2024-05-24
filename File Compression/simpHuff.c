@@ -2,7 +2,18 @@
 #include <stdlib.h> 
 #include <ctype.h>
 
-    void checkFrequency(char c[], int input){
+
+    
+    void huffMan()
+    {
+
+    }
+
+
+
+
+    void checkFrequency(char c[], int input)
+    {
         int frequency[26] = {0}; // 26 is the amount of char in alphabet 
 
         for(int i = 0; i < input; i++){
@@ -10,12 +21,6 @@
                 frequency[c[i] - 'A']++; 
             }
         }
-
-        for(int i = 0; i < 26; i++){
-            printf("The Frequency of %c is %d\n", 'A' + i, frequency[i]); 
-        }
-
-
     }
 
 

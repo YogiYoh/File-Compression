@@ -1,0 +1,6 @@
+File Compression Plan: 
+Learn BST 
+Learn MinHeap 
+Learn How to use Huffman Code 
+Start File Compression Project 
+
