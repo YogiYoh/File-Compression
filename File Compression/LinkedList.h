@@ -41,7 +41,15 @@ struct LinkedList{
 
     void append(char value){
         if(head == NULL){
-            
+            head = (struct Node*)malloc(sizeof(struct Node)); 
+            head->data = value; 
+        }else{
+            Node* temp = (struct Node*)malloc(sizeof(struct Node)); 
+            temp->data = value; 
+            Node* last = head; 
+            while(last->next != NULL){
+                last = last->next;
+            }
         }
     }
 
