@@ -4,3 +4,6 @@ File Compression Plan:
     Learn How to use Huffman Code 
     Start File Compression Project 
 
+
+
+MinHeap 
