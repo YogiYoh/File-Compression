@@ -75,6 +75,24 @@ char getRightChild(int index, BinHeap* node){
     }
 }
 
+BinHeap* insert(BinHeap* node, int value){
+    if(node->size > node->capacity){
+        fprintf(stderr, "Error: Heap Size is greater than Heap Capacity!\n");
+        return node; 
+    }else if(node->size == node->capacity){
+        resize(node, (2 * node->capacity));
+    }
+
+    node->value[node->size + 1] = value; 
+    node->size = node->size + 1; 
+    swim(node); 
+    return node; 
+}
+
+
+BinHeap* swim(BinHeap* node){
+
+}
 
 
 int main(){
