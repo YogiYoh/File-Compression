@@ -46,8 +46,41 @@ void resize(BinHeap* node, int new_capacity){
     }
 }
 
-int main(){
+char getParentNode(int index, char* value){
+    int parent = index / 2; 
+    if(parent != 0){
+        return value[parent]; 
+    }else{
+        return findMax(value); 
+    }
+}
 
+char findMax(char* value){
+    return value[1]; 
+}
+
+char getLeftChild(int index, BinHeap* node){
+    char leftChild = node->value[2 * index]; 
+
+    if(2 * index < node->size){
+        return leftChild; 
+    }
+}
+
+char getRightChild(int index, BinHeap* node){
+    char leftChild = node->value[(2 * index) + 1]; 
+
+    if((2 * index) + 1 < node->size){
+        return leftChild; 
+    }
+}
+
+
+
+int main(){
+    BinHeap* buh = createNode(6); 
 
     
+
+
 }
