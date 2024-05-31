@@ -46,15 +46,6 @@ void resize(BinHeap* node, int new_capacity){
     }
 }
 
-char getParentNode(int index, char* value){
-    int parent = index / 2; 
-    if(parent != 0){
-        return value[parent]; 
-    }else{
-        return findMax(value); 
-    }
-}
-
 char findMax(char* value){
     return value[1]; 
 }
@@ -67,6 +58,17 @@ char getLeftChild(int index, BinHeap* node){
     }
 }
 
+char getParentNode(int index, char* value){
+    int parent = index / 2; 
+    if(parent != 0){
+        return value[parent]; 
+    }else{
+        return findMax(value); 
+    }
+}
+
+
+
 char getRightChild(int index, BinHeap* node){
     char leftChild = node->value[(2 * index) + 1]; 
 
@@ -74,6 +76,13 @@ char getRightChild(int index, BinHeap* node){
         return leftChild; 
     }
 }
+
+BinHeap* swim(BinHeap* node){
+    if(node->value[node->size] > node->value[node->size - 1]){
+        
+    }
+}
+
 
 BinHeap* insert(BinHeap* node, int value){
     if(node->size > node->capacity){
@@ -83,22 +92,43 @@ BinHeap* insert(BinHeap* node, int value){
         resize(node, (2 * node->capacity));
     }
 
-    node->value[node->size + 1] = value; 
+        
+    node->value[node->size] = value; 
     node->size = node->size + 1; 
     swim(node); 
     return node; 
 }
 
 
-BinHeap* swim(BinHeap* node){
+BinHeap* deleteHeap(BinHeap* node){
+    if(node == NULL){
+        return; 
+    }
+
+    if(node->value != NULL){
+        free(node->value); 
+    }
+    free(node); 
 
 }
+
+void printBin(BinHeap* node){
+    for(int i = 0; i < node->capacity; i++){
+        printf("The Value of Bin[%d] is: %d \n", i, node->value[i]);
+    }
+}
+
 
 
 int main(){
     BinHeap* buh = createNode(6); 
 
-    
+    insert(buh, 10); 
+    insert(buh, 9);
+    printBin(buh); 
+
+
+    deleteHeap(buh); 
 
 
 }
