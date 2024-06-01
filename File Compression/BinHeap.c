@@ -103,6 +103,10 @@ void swim(int size, BinHeap* node){
     swim(parentNode, node); 
 }
 
+void sink(int index, BinHeap* node){
+    
+}
+
 
 BinHeap* insert(BinHeap* node, int value){
     
@@ -120,8 +124,31 @@ BinHeap* insert(BinHeap* node, int value){
     return node; 
 }
 
+BinHeap* delete(BinHeap* node, int index){
+    if(node->size > node->capacity){
+        fprintf(stderr, "Error: Heap Size is greater than Heap Capacity!\n");
+        return node; 
+    }else if(node->size < index || index < 0){
+        fprintf(stderr, "Error: Index is out of bounds!\n");
+        return node; 
+    }else if(node->capacity / 2 < node->size){
+        resize(node, (node->capacity / 2));
+    }
 
-BinHeap* deleteHeap(BinHeap* node){
+    free(node->value[index]); 
+    node->value[index] = NULL; 
+    node->size = node->size - 1; 
+    sink(node->size, node); 
+    return node; 
+}
+
+
+
+
+
+
+
+void deleteHeap(BinHeap* node){
     if(node == NULL){
         return; 
     }
@@ -145,13 +172,10 @@ int main(){
     BinHeap* buh = createNode(6); 
 
     insert(buh, 10); 
-    printf("Size: %d\n", buh->size); 
-    printBin(buh);
     insert(buh, 9);
-    printf("Size: %d\n", buh->size); 
-    printBin(buh);
     insert(buh, 30);
-    printf("Size: %d\n", buh->size); 
+    insert(buh, 11);
+    insert(buh, 31);
     printBin(buh); 
 
 
