@@ -1,5 +1,6 @@
 #include <stdlib.h> 
 #include <stdio.h> 
+#include <stdbool.h>
 
 
 #define DEFAULT_CAPACITY 7
@@ -74,14 +75,35 @@ int getParentNode(int index, int* value){
 
 
 int getRightChild(int index, BinHeap* node){
-    int leftChild = node->value[(2 * index) + 1]; 
+    int rightChild = node->value[(2 * index) + 1]; 
 
     if((2 * index) + 1 < node->size){
-        return leftChild; 
+        return rightChild; 
     }
 
     return -1; 
 }
+
+
+void shiftUp(BinHeap* node, int index){
+    while(index > 0){
+        int parent = (index - 1) / 2; 
+        if(node->value[index] > node->value[parent]){
+            swap(&(node->value[index]), &(node->value[parent]));
+            index = parent;
+        }else{
+            break; 
+        }
+    }
+}
+
+
+void swap(int* a, int* b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 
 void swim(int size, BinHeap* node){
 
@@ -104,7 +126,26 @@ void swim(int size, BinHeap* node){
 }
 
 void sink(int index, BinHeap* node){
-    
+        int leftChild = (2 * index) + 1; 
+        int rightChild = (2 * index) + 2;
+        int large = index; 
+
+        if (leftChild < node->size && node->value[leftChild] > node->value[large]) {
+           large = leftChild;
+        }
+
+        if (rightChild < node->size && node->value[rightChild] > node->value[large]) {
+           large = rightChild;
+        }
+        
+        if(large == index){
+            return; 
+        }
+
+        swap(&(node->value[index]), &(node->value[large])); 
+        index = large; 
+        sink(index, node);  
+
 }
 
 
@@ -128,24 +169,20 @@ BinHeap* delete(BinHeap* node, int index){
     if(node->size > node->capacity){
         fprintf(stderr, "Error: Heap Size is greater than Heap Capacity!\n");
         return node; 
-    }else if(node->size < index || index < 0){
+    }else if(node->size <= index || index < 0){
         fprintf(stderr, "Error: Index is out of bounds!\n");
         return node; 
-    }else if(node->capacity / 2 < node->size){
+    }else if(node->size < node->capacity / 2){
         resize(node, (node->capacity / 2));
     }
 
-    free(node->value[index]); 
-    node->value[index] = NULL; 
-    node->size = node->size - 1; 
-    sink(node->size, node); 
-    return node; 
+    swap(&node->value[index], &node->value[node->size - 1]);
+    node->size--;
+    if (index < node->size) {
+        shiftUp(node, index);
+        sink(index, node);
+    }
 }
-
-
-
-
-
 
 
 void deleteHeap(BinHeap* node){
@@ -161,7 +198,7 @@ void deleteHeap(BinHeap* node){
 }
 
 void printBin(BinHeap* node){
-    for(int i = 0; i < node->capacity; i++){
+    for(int i = 0; i < node->size; i++){
         printf("The Value of Bin[%d] is: %d \n", i, node->value[i]);
     }
 }
@@ -169,13 +206,16 @@ void printBin(BinHeap* node){
 
 
 int main(){
-    BinHeap* buh = createNode(6); 
 
-    insert(buh, 10); 
-    insert(buh, 9);
-    insert(buh, 30);
-    insert(buh, 11);
-    insert(buh, 31);
+    int ARRAY []= {2, 7, 26, 25, 19, 17, 1, 90, 3, 36}; 
+    BinHeap* buh = createNode(10); 
+
+
+    for(int i = 0; i < 10; i++){
+        insert(buh, ARRAY[i]); 
+    }
+
+
     printBin(buh); 
 
 
