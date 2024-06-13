@@ -1,16 +1,7 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <ctype.h>
-
-
-    
-    void huffMan()
-    {
-
-    }
-
-
-
+#include "MinHeap.c"
 
     void checkFrequency(char c[], int input)
     {

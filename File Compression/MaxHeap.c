@@ -165,7 +165,7 @@ BinHeap* insert(BinHeap* node, int value){
     return node; 
 }
 
-BinHeap* delete(BinHeap* node, int index){
+BinHeap* Delete(BinHeap* node, int index){
     if(node->size > node->capacity){
         fprintf(stderr, "Error: Heap Size is greater than Heap Capacity!\n");
         return node; 
@@ -205,21 +205,3 @@ void printBin(BinHeap* node){
 
 
 
-int main(){
-
-    int ARRAY []= {2, 7, 26, 25, 19, 17, 1, 90, 3, 36}; 
-    BinHeap* buh = createNode(10); 
-
-
-    for(int i = 0; i < 10; i++){
-        insert(buh, ARRAY[i]); 
-    }
-
-
-    printBin(buh); 
-
-
-    deleteHeap(buh); 
-
-
-}
