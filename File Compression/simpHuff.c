@@ -22,7 +22,7 @@ HuffMan* createHuff(int capacity){
 }
 
 
-    void checkFrequency(char c[], int input, HuffMan* node)
+    void frequency(char c[], int input, HuffMan* node)
     {
         for(int i = 0; i < input; i++){
             bool found = false; 
@@ -46,6 +46,28 @@ HuffMan* createHuff(int capacity){
     }
 
 
+    void frequencyMsg(HuffMan* node){
+        for(int i = 0; i < node->uniqueChars; i++){
+            printf("The character %c has the frequency of %d\n", node->characters[i], node->frequency[i]); 
+        }
+    }
+
+void deleteHuff(HuffMan* node){
+    if(node == NULL){
+        return; 
+    }
+
+    if(node->frequency != NULL){
+        free(node->frequency); 
+    }
+
+
+    if(node->characters != NULL){
+        free(node->characters); 
+    }
+    free(node); 
+
+}
 
 
 
@@ -75,9 +97,11 @@ int main(){
     HuffMan* node = createHuff(input); 
     
 
-    checkFrequency(character, input, node); 
+    frequency(character, input, node); 
 
     frequencyMsg(node); 
+
+    deleteHuff(node); 
 
     return 0; 
 
