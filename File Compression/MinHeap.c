@@ -149,6 +149,10 @@ void sink(int index, MinHeap* node){
 }
 
 
+
+
+
+
 MinHeap* insert(MinHeap* node, int value){
     
     if(node->size > node->capacity){
@@ -182,6 +186,13 @@ MinHeap* Delete(MinHeap* node, int index){
         shiftUp(node, index);
         sink(index, node);
     }
+}
+
+
+int extractMin(MinHeap* node){
+    int firstNode = node->value[0]; 
+    Delete(node, 0); 
+    return firstNode; 
 }
 
 

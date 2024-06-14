@@ -79,7 +79,7 @@ int main(){
     scanf("%d", &input); 
     // Debugging input 
     printf("The numbers of inputs is: %d\n", input); 
-    
+
     getchar();
     char character[input]; 
     while(x < input){
@@ -101,8 +101,11 @@ int main(){
         insert(min, node->frequency[i]); 
     }
 
+    printf("Before:\n"); 
     printBin(min); 
-
+    int first = extractMin(min); 
+    printf("First is %d,  After:\n", first); 
+    printBin(min); 
     deleteHuff(node); 
 
     deleteHeap(min); 
