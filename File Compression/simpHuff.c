@@ -22,7 +22,7 @@ HuffMan* createHuff(int capacity){
 }
 
 
-    void frequency(char c[], int input, HuffMan* node)
+void frequency(char c[], int input, HuffMan* node)
     {
         for(int i = 0; i < input; i++){
             bool found = false; 
@@ -79,29 +79,33 @@ int main(){
     scanf("%d", &input); 
     // Debugging input 
     printf("The numbers of inputs is: %d\n", input); 
-
+    
     getchar();
-
-
     char character[input]; 
-
-
     while(x < input){
         printf("Give me a character: "); 
         scanf(" %c", &character[x]); 
         character[x] = toupper(character[x]); 
-        printf("\n");
         x++; 
     }
 
-    HuffMan* node = createHuff(input); 
-    
 
+    HuffMan* node = createHuff(input); 
     frequency(character, input, node); 
 
-    frequencyMsg(node); 
+    frequencyMsg(node);
+
+    MinHeap* min = createNode(node->uniqueChars); 
+
+    for(int i = 0; i < node->uniqueChars; i++){
+        insert(min, node->frequency[i]); 
+    }
+
+    printBin(min); 
 
     deleteHuff(node); 
+
+    deleteHeap(min); 
 
     return 0; 
 
