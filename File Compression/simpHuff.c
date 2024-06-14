@@ -1,6 +1,7 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <ctype.h>
+#include <stdbool.h> 
 #include "MinHeap.c"
 
 typedef struct Node{
@@ -21,18 +22,31 @@ HuffMan* createHuff(int capacity){
 }
 
 
-
-
-    void checkFrequency(char c[], int input)
+    void checkFrequency(char c[], int input, HuffMan* node)
     {
-        int frequency[26] = {0}; // 26 is the amount of char in alphabet 
-
         for(int i = 0; i < input; i++){
+            bool found = false; 
+            char currentChar = c[i]; 
             if(c[i] >= 'A' && c[i] <= 'Z'){
-                frequency[c[i] - 'A']++; 
+                for(int j = 0; j < node->uniqueChars; j++){
+                    if(node->characters[j] == currentChar){
+                        node->frequency[j]++; 
+                        found = true;
+                        break;  
+                    }
+
+                }
+            }
+            if(!found){
+                node->characters[node->uniqueChars] = currentChar;
+                node->frequency[node->uniqueChars] = 1;
+                node->uniqueChars++;
             }
         }
     }
+
+
+
 
 
 int main(){
@@ -57,10 +71,33 @@ int main(){
         printf("\n");
         x++; 
     }
+
+    HuffMan* node = createHuff(input); 
     
 
-    checkFrequency(character, input); 
+    checkFrequency(character, input, node); 
+
+    frequencyMsg(node); 
 
     return 0; 
 
 }
+
+// int main(){
+
+//     int ARRAY []= {2, 7, 26, 25, 19, 17, 1, 90, 3, 36}; 
+//     MinHeap* buh = createNode(10); 
+
+
+//     for(int i = 0; i < 10; i++){
+//         insert(buh, ARRAY[i]); 
+//     }
+
+
+//     printBin(buh); 
+
+
+//     deleteHeap(buh); 
+
+
+// }
