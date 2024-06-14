@@ -48,7 +48,7 @@ void resize(BinHeap* node, int new_capacity){
 }
 
 int findMax(int* value){
-    return value[1]; 
+    return value[0]; 
 }
 
 int getLeftChild(int index, BinHeap* node){
@@ -203,5 +203,23 @@ void printBin(BinHeap* node){
     }
 }
 
+int main(){
 
+    int ARRAY []= {2, 7, 26, 25, 19, 17, 1, 90, 3, 36}; 
+    BinHeap* buh = createNode(10); 
+
+
+    for(int i = 0; i < 11; i++){
+        insert(buh, ARRAY[i]); 
+    }
+    Delete(buh, 0);
+
+
+    printBin(buh); 
+
+
+    deleteHeap(buh); 
+
+
+}
 
