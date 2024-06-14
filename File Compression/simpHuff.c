@@ -4,7 +4,7 @@
 #include <stdbool.h> 
 #include "MinHeap.c"
 
-typedef struct Node{
+typedef struct Huffman{
     int* frequency; 
     char* characters;
     int uniqueChars; 
@@ -107,21 +107,3 @@ int main(){
 
 }
 
-// int main(){
-
-//     int ARRAY []= {2, 7, 26, 25, 19, 17, 1, 90, 3, 36}; 
-//     MinHeap* buh = createNode(10); 
-
-
-//     for(int i = 0; i < 10; i++){
-//         insert(buh, ARRAY[i]); 
-//     }
-
-
-//     printBin(buh); 
-
-
-//     deleteHeap(buh); 
-
-
-// }
