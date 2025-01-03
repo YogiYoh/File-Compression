@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdexcept>
 #include <iostream> 
+#include <vector>
 
 
 #define DEFAULT_CAPACITY 7
@@ -171,7 +172,7 @@ Node* buildHuffManTree(Node** array, int size){
 
 }
 
-void printCodes(Node* root, int arr[], int top, int size, std::string codes[]){
+void printCodes(Node* root, int arr[], int top, int size, std::vector<std::string> codes){
     if (root->left) { 
         arr[top] = 0; 
         printCodes(root->left, arr, top + 1, size, codes); 
@@ -207,7 +208,7 @@ void HuffManCode(Node** array, int size){
 
     int arr[size] , top = 0; 
     
-    std::string codes[size]; 
+    std::vector<std::string> codes(size);
 
     printCodes(root, arr, top, size, codes); 
 }
@@ -221,7 +222,11 @@ int main(){
     for(int i = 0; i < size; i++){
         int input = 0; 
         std::cin >> input; 
-        array[i] = new Node(static_cast<char>(i), input);
+        if (input > 0) { // Skips Case where there's zero frequencies
+            array[i] = new Node(static_cast<char>(i), input);
+        } else {
+            array[i] = nullptr;  
+        }
     }
 
    HuffManCode(array, size); 
