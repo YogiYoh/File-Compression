@@ -171,21 +171,20 @@ Node* buildHuffManTree(Node** array, int size){
 
 }
 
-void printCodes(Node* root, int arr[], int top){
-    static std::string codes[6];
+void printCodes(Node* root, int arr[], int top, int size, std::string codes[]){
     if (root->left) { 
         arr[top] = 0; 
-        printCodes(root->left, arr, top + 1); 
+        printCodes(root->left, arr, top + 1, size, codes); 
     } 
 
     if (root->right) { 
-        arr[top] = 1; 
-        printCodes(root->right, arr, top + 1); 
+        arr[top] = 1;  
+        printCodes(root->right, arr, top + 1, size, codes); 
     } 
 
     if (isLeaf(root)) { 
         int index = root->data - 'A';
-        if (index >= 0 && index < 6) { 
+        if (index >= 0 && index < size) { 
             std::string code = "";
             for (int i = 0; i < top; ++i) {
                 code += std::to_string(arr[i]);
@@ -206,14 +205,16 @@ void HuffManCode(Node** array, int size){
     Node* root = buildHuffManTree(array, size); 
 
     int arr[size] , top = 0; 
+    
+    std::string codes[size]; 
 
-    printCodes(root, arr, top); 
+    printCodes(root, arr, top, size, codes); 
 }
 
 
 
 int main(){
-    int size = 6;
+    int size = 10;
     MinHeap minHeap(size);  
     Node* array[size]; 
     for(int i = 0; i < size; i++){
