@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <iostream> 
 #include <vector>
-
+#include <fstream> 
+#include <map>
 
 #define DEFAULT_CAPACITY 7
 
@@ -214,22 +215,54 @@ void HuffManCode(Node** array, int size){
 }
 
 
+void frequencyFile(std::ifstream& file, Node* array[]){\
+    std::map<char, int> frequency;
+
+    char c; 
+    while (file.get(c)) {
+        if (c >= 0 && c < 128) {  // Ensure ASCII range
+            frequency[static_cast<int>(c)]++;
+        }
+    }
+}
+
+
 
 int main(){
     static int size = 128;
     MinHeap minHeap(size);  
-    Node* array[size]; 
-    for(int i = 0; i < size; i++){
-        int input = 0; 
-        std::cin >> input; 
-        if (input > 0) { // Skips Case where there's zero frequencies
-            array[i] = new Node(static_cast<char>(i), input);
-        } else {
-            array[i] = nullptr;  
-        }
+    Node* array[size];
+
+    std::string input; 
+
+    std::cout << "What file do you want to compress?: " << std::endl; 
+
+    std::getline(std::cin, input);
+
+     std::ifstream inputFile(input);
+
+    if (!inputFile) {
+        std::cerr << "Error: Could not open the file." << std::endl;
+        return 1;
     }
 
+    frequencyFile(inputFile, array);
+
+
+
+
+    // for(int i = 0; i < size; i++){
+    //     int input = 0; 
+    //     std::cin >> input; 
+    //     if (input > 0) { // Skips Case where there's zero frequencies
+    //         array[i] = new Node(static_cast<char>(i), input);
+    //     } else {
+    //         array[i] = nullptr;  
+    //     }
+    // }
+
    HuffManCode(array, size); 
+
     for(int i = 0; i < size; i++){
         delete array[i];
     }
