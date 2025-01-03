@@ -183,7 +183,7 @@ void printCodes(Node* root, int arr[], int top, int size, std::string codes[]){
     } 
 
     if (isLeaf(root)) { 
-        int index = root->data - 'A';
+        int index = static_cast<int>(root->data);
         if (index >= 0 && index < size) { 
             std::string code = "";
             for (int i = 0; i < top; ++i) {
@@ -194,9 +194,10 @@ void printCodes(Node* root, int arr[], int top, int size, std::string codes[]){
     } 
 
     if (top == 0) {
-        for (char ch = 'A'; ch <= 'F'; ch++) {
-            int index = ch - 'A';
-            std::cout << ch << ":" << codes[index] << "\n";
+        for (int i = 0; i < size; i++) {
+            if (!codes[i].empty()) { 
+                std::cout << static_cast<char>(i) << ":" << codes[i] << "\n";
+            }
         }
     }
 }
@@ -214,17 +215,16 @@ void HuffManCode(Node** array, int size){
 
 
 int main(){
-    int size = 10;
+    static int size = 128;
     MinHeap minHeap(size);  
     Node* array[size]; 
     for(int i = 0; i < size; i++){
         int input = 0; 
         std::cin >> input; 
-        array[i] = new Node(static_cast<char>(i + 65), input);
+        array[i] = new Node(static_cast<char>(i), input);
     }
 
    HuffManCode(array, size); 
-   
     for(int i = 0; i < size; i++){
         delete array[i];
     }
