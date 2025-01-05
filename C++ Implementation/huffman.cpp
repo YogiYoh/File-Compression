@@ -152,7 +152,9 @@ Node* buildHuffManTree(Node** array, int size){
 
     MinHeap min(size); 
     for(int i = 0; i < size; i++){
-        min.insert(array[i]);
+        if (array[i] != nullptr) {
+            min.insert(array[i]);
+        }
     }
 
     while(min.size > 1){
@@ -173,7 +175,7 @@ Node* buildHuffManTree(Node** array, int size){
 
 }
 
-void printCodes(Node* root, int arr[], int top, int size, std::vector<std::string> codes){
+void printCodes(Node* root, int arr[], int top, int size, std::vector<std::string>& codes){
     if (root->left) { 
         arr[top] = 0; 
         printCodes(root->left, arr, top + 1, size, codes); 
@@ -198,7 +200,9 @@ void printCodes(Node* root, int arr[], int top, int size, std::vector<std::strin
     if (top == 0) {
         for (int i = 0; i < size; i++) {
             if (!codes[i].empty()) { 
-                std::cout << static_cast<char>(i) << ":" << codes[i] << "\n";
+                std::cout << "[" << (int)i << "] '" 
+                << ( (i > 31 && i < 127) ? static_cast<char>(i) : ' ' ) 
+                << "': " << codes[i] << "\n";
             }
         }
     }
@@ -218,11 +222,22 @@ void HuffManCode(Node** array, int size){
 void frequencyFile(std::ifstream& file, Node* array[]){\
     std::map<char, int> frequency;
 
-    char c; 
+    char c;
     while (file.get(c)) {
-        if (c >= 0 && c < 128) {  // Ensure ASCII range
+        if (c >= 0 && c < 128) {
             frequency[static_cast<int>(c)]++;
         }
+    }
+
+    for (const auto& pair : frequency) {
+        char character = pair.first;
+        int freq = pair.second;
+
+        if (freq > 0) { 
+            array[static_cast<int>(character)] = new Node(character, freq);
+        } else {
+            array[static_cast<int>(character)] = nullptr;  // Skips Case where there's zero frequencies
+         }
     }
 }
 
@@ -232,6 +247,10 @@ int main(){
     static int size = 128;
     MinHeap minHeap(size);  
     Node* array[size];
+
+    for (int i = 0; i < size; i++) {
+        array[i] = nullptr;
+    }
 
     std::string input; 
 
@@ -248,20 +267,7 @@ int main(){
 
     frequencyFile(inputFile, array);
 
-
-
-
-    // for(int i = 0; i < size; i++){
-    //     int input = 0; 
-    //     std::cin >> input; 
-    //     if (input > 0) { // Skips Case where there's zero frequencies
-    //         array[i] = new Node(static_cast<char>(i), input);
-    //     } else {
-    //         array[i] = nullptr;  
-    //     }
-    // }
-
-   HuffManCode(array, size); 
+    HuffManCode(array, size); 
 
     for(int i = 0; i < size; i++){
         delete array[i];
