@@ -162,7 +162,7 @@ Node* buildHuffManTree(Node** array, int size){
         left = min.extractMin(); 
         right = min.extractMin(); 
 
-        top = new Node('$', left->freq + right->freq); 
+        top = new Node('\0', left->freq + right->freq); 
   
         top->left = left; 
         top->right = right; 
@@ -219,7 +219,7 @@ void HuffManCode(Node** array, int size){
 }
 
 
-void frequencyFile(std::ifstream& file, Node* array[]){\
+void frequencyFile(std::ifstream& file, Node* array[]){
     std::map<char, int> frequency;
 
     char c;
@@ -230,14 +230,16 @@ void frequencyFile(std::ifstream& file, Node* array[]){\
     }
 
     for (const auto& pair : frequency) {
+    std::cout << "Character: '" << pair.first << "' (ASCII: " 
+              << static_cast<int>(pair.first) << "), Frequency: " << pair.second << std::endl;
+    }
+
+    for (const auto& pair : frequency) {
         char character = pair.first;
         int freq = pair.second;
-
         if (freq > 0) { 
             array[static_cast<int>(character)] = new Node(character, freq);
-        } else {
-            array[static_cast<int>(character)] = nullptr;  // Skips Case where there's zero frequencies
-         }
+        } 
     }
 }
 
@@ -272,6 +274,8 @@ int main(){
     for(int i = 0; i < size; i++){
         delete array[i];
     }
+
+    return 0; 
 }
 
 
