@@ -6,8 +6,10 @@
 #include <vector>
 #include <fstream> 
 #include <map>
+#include <bitset>
 
 #define DEFAULT_CAPACITY 7
+
 
 struct Node {
     char data;   
@@ -147,6 +149,19 @@ int isLeaf(Node* root){
     return !(root->left) && !(root->right); 
 } 
 
+void writeCompressedFile(const std::string& compressed, const std::string& outputFile) {
+    std::ofstream out(outputFile, std::ios::binary);
+    for (size_t i = 0; i < compressed.size(); i += 8) {
+        std::string byteStr = compressed.substr(i, 8);
+        while (byteStr.size() < 8) byteStr += "0"; 
+        unsigned char byte = std::bitset<8>(byteStr).to_ulong();
+        out.put(byte);
+    }
+
+    out.close();
+}
+
+
 Node* buildHuffManTree(Node** array, int size){
     Node *left, *right, *top; 
 
@@ -192,7 +207,7 @@ void printCodes(Node* root, int arr[], int top, int size, std::vector<std::strin
             std::string code = "";
             for (int i = 0; i < top; ++i) {
                 code += std::to_string(arr[i]);
-            }
+            }   
             codes[index] = code;
         }
     } 
@@ -207,6 +222,9 @@ void printCodes(Node* root, int arr[], int top, int size, std::vector<std::strin
         }
     }
 }
+
+
+
 
 void HuffManCode(Node** array, int size){
     Node* root = buildHuffManTree(array, size); 
@@ -270,6 +288,7 @@ int main(){
     frequencyFile(inputFile, array);
 
     HuffManCode(array, size); 
+
 
     for(int i = 0; i < size; i++){
         delete array[i];
