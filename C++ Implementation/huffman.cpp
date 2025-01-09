@@ -226,20 +226,16 @@ void printCodes(Node* root, int arr[], int top, int size, std::vector<std::strin
 
 
 
-void HuffManCode(Node** array, int size){
+void HuffManCode(Node** array, int size, std::map<char, int>& frequency, std::vector<std::string>& codes){
     Node* root = buildHuffManTree(array, size); 
 
     int arr[size] , top = 0; 
-    
-    std::vector<std::string> codes(size);
 
     printCodes(root, arr, top, size, codes); 
 }
 
 
-void frequencyFile(std::ifstream& file, Node* array[]){
-    std::map<char, int> frequency;
-
+void frequencyFile(std::ifstream& file, Node* array[],  std::map<char, int>& frequency){
     char c;
     while (file.get(c)) {
         if (c >= 0 && c < 128) {
@@ -264,8 +260,10 @@ void frequencyFile(std::ifstream& file, Node* array[]){
 
 
 int main(){
+    std::map<char, int> frequency;
     static int size = 128;
     MinHeap minHeap(size);  
+    std::vector<std::string> codes(size);
     Node* array[size];
 
     for (int i = 0; i < size; i++) {
@@ -285,9 +283,23 @@ int main(){
         return 1;
     }
 
-    frequencyFile(inputFile, array);
+    frequencyFile(inputFile, array, frequency);
 
-    HuffManCode(array, size); 
+    HuffManCode(array, size, frequency, codes); 
+
+    inputFile.clear();
+    inputFile.seekg(0, std::ios::beg);
+
+    std::string fullCompressed;
+    char c;
+    
+    while (inputFile.get(c)) {
+        fullCompressed += codes[static_cast<unsigned char>(c)];
+    }
+
+   
+    writeCompressedFile(fullCompressed, "compressed.bin");
+    std::cout << "Compressed!" << std::endl; 
 
 
     for(int i = 0; i < size; i++){
