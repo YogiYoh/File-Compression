@@ -149,8 +149,42 @@ int isLeaf(Node* root){
     return !(root->left) && !(root->right); 
 } 
 
-void writeCompressedFile(const std::string& compressed, const std::string& outputFile) {
+
+void serializeTree(Node* root, std::ofstream& out) {
+    if(root == nullptr){
+        return;
+    }
+
+    if (isLeaf(root)) {
+        out.put('1'); 
+        out.put(root->data);  
+    } else {
+        out.put('0');  
+        serializeTree(root->left, out);  
+        serializeTree(root->right, out); 
+    }
+}
+
+void serializeTreeDebug(Node* root) {
+    if(root == nullptr){
+        return;
+    }
+
+    if (isLeaf(root)) {
+        std::cout << "1" << root->data; 
+    } else {
+        std::cout << "0"; 
+    }
+}
+
+
+void writeCompressedFile(const std::string& compressed, const std::string& outputFile, Node* root) {
     std::ofstream out(outputFile, std::ios::binary);
+
+    serializeTree(root, out);
+
+    serializeTreeDebug(root);
+
     for (size_t i = 0; i < compressed.size(); i += 8) {
         std::string byteStr = compressed.substr(i, 8);
         while (byteStr.size() < 8) byteStr += "0"; 
@@ -226,12 +260,14 @@ void printCodes(Node* root, int arr[], int top, int size, std::vector<std::strin
 
 
 
-void HuffManCode(Node** array, int size, std::map<char, int>& frequency, std::vector<std::string>& codes){
+Node* HuffManCode(Node** array, int size, std::map<char, int>& frequency, std::vector<std::string>& codes){
     Node* root = buildHuffManTree(array, size); 
 
     int arr[size] , top = 0; 
 
     printCodes(root, arr, top, size, codes); 
+
+    return root; 
 }
 
 
@@ -256,6 +292,7 @@ void frequencyFile(std::ifstream& file, Node* array[],  std::map<char, int>& fre
         } 
     }
 }
+
 
 
 
@@ -285,7 +322,7 @@ int main(){
 
     frequencyFile(inputFile, array, frequency);
 
-    HuffManCode(array, size, frequency, codes); 
+    Node* root = HuffManCode(array, size, frequency, codes); 
 
     inputFile.clear();
     inputFile.seekg(0, std::ios::beg);
@@ -298,8 +335,11 @@ int main(){
     }
 
    
-    writeCompressedFile(fullCompressed, "compressed.bin");
+    writeCompressedFile(fullCompressed, "compressed.bin", root);
     std::cout << "Compressed!" << std::endl; 
+
+
+
 
 
     for(int i = 0; i < size; i++){
